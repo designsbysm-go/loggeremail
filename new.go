@@ -14,6 +14,10 @@ type options struct {
 }
 
 func New(subject string, from string, password string, to []string, host string, port string) io.Writer {
+	if from == "" || len(to) == 0 || host == "" || port == "" {
+		return nil
+	}
+
 	return options{
 		from:     from,
 		host:     host,
