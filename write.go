@@ -6,18 +6,45 @@ import (
 	"strings"
 )
 
-func (o options) Write(p []byte) (n int, err error) {
-	var auth smtp.Auth
-	if o.password != "" {
-		auth = smtp.PlainAuth("", o.from, o.password, o.host)
+var SendMail = smtp.SendMail
+
+func getAddress(host string, port string) string {
+	return fmt.Sprintf("%s:%s", host, port)
+}
+
+func getAuth(host string, user string, password string) smtp.Auth {
+	if password == "" {
+		return nil
 	}
 
-	to := strings.Join(o.to, ";")
-	body := []byte(fmt.Sprintf("To: %s\r\nSubject: %s\r\n\r\n", to, o.subject))
+	return smtp.PlainAuth("", user, password, host)
+}
+
+func getBody(to string, subject string, p []byte) []byte {
+	body := []byte(fmt.Sprintf("To: %s\r\n", to))
+
+	if subject != "" {
+		body = append(body, []byte(fmt.Sprintf("Subject: %s\r\n", subject))...)
+	}
+
+	body = append(body, []byte("\r\n")...)
 	body = append(body, p...)
 	body = append(body, []byte("\r\n")...)
 
-	err = smtp.SendMail(fmt.Sprintf("%s:%s", o.host, o.port), auth, o.from, o.to, body)
+	return body
+}
+
+func getTo(to []string) string {
+	return strings.Join(to, ";")
+}
+
+func (o options) Write(p []byte) (n int, err error) {
+	auth := getAuth(o.host, o.from, o.password)
+	to := getTo(o.to)
+	body := getBody(to, o.subject, p)
+	address := getAddress(o.host, o.port)
+
+	err = SendMail(address, auth, o.from, o.to, body)
 	if err != nil {
 		return 0, err
 	}
