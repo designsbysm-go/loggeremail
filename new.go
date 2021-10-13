@@ -8,13 +8,13 @@ type options struct {
 	from     string
 	host     string
 	password string
-	port     string
+	port     int
 	subject  string
 	to       []string
 }
 
-func New(subject string, from string, password string, to []string, host string, port string) io.Writer {
-	if from == "" || len(to) == 0 || host == "" || port == "" {
+func New(subject string, from string, password string, to []string, host string, port int) io.Writer {
+	if from == "" || len(to) == 0 || host == "" || port == 0 {
 		return nil
 	}
 
