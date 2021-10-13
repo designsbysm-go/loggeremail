@@ -19,7 +19,7 @@ func TestShouldSendEmail(t *testing.T) {
 	subject := "subject"
 	p := []byte("test")
 
-	w := New(subject, "from", "", toList, "host", "port")
+	w := New(subject, "from", "", toList, "host", 25)
 	body := getBody(to, subject, p)
 	n, err := w.Write(p)
 
@@ -40,7 +40,7 @@ func TestShouldNotSendEmail(t *testing.T) {
 		return errors.New("some error")
 	}
 
-	w := New("", "from", "password", []string{"to"}, "host", "port")
+	w := New("", "from", "password", []string{"to"}, "host", 25)
 	n, err := w.Write([]byte("test"))
 
 	if n != 0 {
