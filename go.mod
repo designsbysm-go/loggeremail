@@ -1,3 +1,3 @@
-module github.com/designsbysm/loggeremail
+module github.com/designsbysm/timberemail
 
 go 1.16

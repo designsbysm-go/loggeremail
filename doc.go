@@ -1,2 +1,2 @@
 // TODO: add documentation
-package loggeremail
+package timberemail

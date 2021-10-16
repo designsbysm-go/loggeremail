@@ -1,4 +1,4 @@
-package loggeremail
+package timberemail
 
 import (
 	"errors"

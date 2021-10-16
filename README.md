@@ -1,3 +1,3 @@
-# Logger Email
+# Timber Email
 
-Email log writer for Go.
+Email writer for Timber Go logger.
